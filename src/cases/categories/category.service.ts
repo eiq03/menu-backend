@@ -4,7 +4,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
 import { CreateCategoryDto } from './dto/create-category';
 import { UpdateCategoryDto } from './dto/update-category';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class CategoryService {
   constructor(
     @InjectRepository(Category)
