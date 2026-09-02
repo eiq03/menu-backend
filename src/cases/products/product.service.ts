@@ -38,7 +38,9 @@ export class ProductService {
   }
 
   async create(dto: CreateProductDto): Promise<Product> {
-    const category = dto.categoryId ? await this.getActiveCategory(dto.categoryId) : null;
+    const category = dto.categoryId
+      ? await this.getActiveCategory(dto.categoryId)
+      : null;
 
     const product = this.productRepository.create({
       name: dto.name.trim(),
@@ -63,6 +65,23 @@ export class ProductService {
       product.active = dto.active;
     }
 
+    if (dto.description !== undefined) {
+      product.description = dto.description;
+    }
+
+    if (dto.price !== undefined) {
+      product.price = dto.price;
+    }
+
+    if (dto.picture !== undefined) {
+      product.picture = dto.picture;
+    }
+
+    if (dto.categoryId !== undefined) {
+      product.category = dto.categoryId
+        ? await this.getActiveCategory(dto.categoryId)
+        : null;
+    }
     return this.productRepository.save(product);
   }
 

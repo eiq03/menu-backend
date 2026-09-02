@@ -10,17 +10,17 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { Spot } from './product.entity';
-import { SpotService } from './product.service';
-import { CreateSpotDto } from './dto/create-product';
-import { UpdateSpotDto } from './dto/update-product';
+import { Product } from './product.entity';
+import { ProductService } from './product.service';
+import { CreateProductDto } from './dto/create-product';
+import { UpdateProductDto } from './dto/update-product';
 
-@Controller('spots')
-export default class SpotController {
-  constructor(private readonly service: SpotService) {}
+@Controller('products')
+export default class ProductController {
+  constructor(private readonly service: ProductService) {}
 
   @Get()
-  findAll(): Promise<Spot[]> {
+  findAll(): Promise<Product[]> {
     return this.service.findAll();
   }
 
@@ -28,14 +28,14 @@ export default class SpotController {
   findOne(
     @Param('id', ParseUUIDPipe)
     id: string,
-  ): Promise<Spot> {
+  ): Promise<Product> {
     return this.service.findOne(id);
   }
   @Post()
   create(
     @Body()
-    dto: CreateSpotDto,
-  ): Promise<Spot> {
+    dto: CreateProductDto,
+  ): Promise<Product> {
     return this.service.create(dto);
   }
 
@@ -44,8 +44,8 @@ export default class SpotController {
     @Param('id', ParseUUIDPipe)
     id: string,
     @Body()
-    dto: UpdateSpotDto,
-  ): Promise<Spot> {
+    dto: UpdateProductDto,
+  ): Promise<Product> {
     return this.service.update(id, dto);
   }
 
@@ -54,7 +54,7 @@ export default class SpotController {
   remove(
     @Param('id', ParseUUIDPipe)
     id: string,
-  ): Promise<Spot> {
+  ): Promise<void> {
     return this.service.remove(id);
   }
 }
