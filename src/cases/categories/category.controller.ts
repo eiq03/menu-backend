@@ -54,7 +54,7 @@ export class CategoryController {
   remove(
     @Param('id', ParseUUIDPipe)
     id: string,
-  ): Promise<Category> {
+  ): Promise<void> {
     return this.service.remove(id);
   }
 }

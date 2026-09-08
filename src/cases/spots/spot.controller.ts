@@ -54,7 +54,7 @@ export default class SpotController {
   remove(
     @Param('id', ParseUUIDPipe)
     id: string,
-  ): Promise<Spot> {
+  ): Promise<void> {
     return this.service.remove(id);
   }
 }

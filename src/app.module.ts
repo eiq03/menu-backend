@@ -9,19 +9,23 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-      const databaseURL = configService.get<string>('DATABASE_URL'),
-      const dbSchema = configService.get<string>('DATABASE_SCHEMA', 'public');
+      useFactory: (configService: ConfigService) => {
+        const databaseURL = configService.get<string>('DATABASE_URL');
+        const dbSchema = configService.get<string>('DATABASE_SCHEMA', 'public');
 
-      if(!databaseURL) {
-        throw new Error('A variavel de ambiente DATABASE_URL não foi encontrada.');
-      }
-      return {
-        type: 'postgres',
-        url: databaseURL,
-        schema: dbSchema,
-        autoLoadEntities: true,
-      }
+        if (!databaseURL) {
+          throw new Error(
+            'A variavel de ambiente DATABASE_URL não foi encontrada.',
+          );
+        }
+
+        return {
+          type: 'postgres',
+          url: databaseURL,
+          schema: dbSchema,
+          autoLoadEntities: true,
+        };
+      },
     }),
   ],
   controllers: [],

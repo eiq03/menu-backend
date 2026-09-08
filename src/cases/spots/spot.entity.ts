@@ -1,8 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Category } from '../categories/category.entity';
 
 @Entity()
-export class Product {
+export class Spot {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
