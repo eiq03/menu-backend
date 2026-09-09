@@ -45,12 +45,12 @@ export class GuestCheckService {
     // aqui grava o registro
     const guestCheck = this.guestCheckRepository.create({
       spot,
-      status: GuestCheckStatus.OPENED,
+      Status: GuestCheckStatus.OPENED,
     });
     return this.guestCheckRepository.save(guestCheck);
   }
-  async findOne (id: string): Promise<GuestCheck> {
-    const guestCheck = this.guestCheckRepository.findOneBy({ id });
+  async findOne(id: string): Promise<GuestCheck> {
+    const guestCheck = await this.guestCheckRepository.findOneBy({ id });
     if (!guestCheck) {
       throw new NotFoundException('Comanda não encontrada');
     }
@@ -58,7 +58,7 @@ export class GuestCheckService {
   }
 
   async close(id: string): Promise<GuestCheck> {
-    const guestCheck = await this.findOne({ id });
+    const guestCheck = await this.findOne(id);
 
     // Regra #1: só posso fechar comandas abertas
     if (guestCheck.Status === GuestCheckStatus.CLOSED) {
