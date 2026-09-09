@@ -1,34 +1,35 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
+  CreateDateColumn,
+  Entity,
   JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Category } from '../categories/category.entity';
+import { Spot } from '../spots/spot.entity';
 
-@Entity()
-export class Spot {
+export enum GuestCheckStatus {
+  OPENED = 'open',
+  CLOSED = 'closed',
+  CANCELED = 'canceled',
+}
+
+@Entity('guest-check')
+export class GuestCheck {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 60, nullable: false })
-  name: string;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
-  @Column({ type: 'boolean', default: true })
-  active: boolean;
+  @Column({
+    type: 'enum',
+    enum: GuestCheckStatus,
+    default: GuestCheckStatus.OPENED,
+  })
+  Status: GuestCheckStatus;
 
-  @Column({ type: 'text', nullable: true })
-  description?: string;
-
-  @Column({ type: 'numeric', precision: 10, scale: 2 })
-  price: number;
-
-  @Column({ type: 'text', nullable: true })
-  picture?: string;
-
-  //Category
-  @ManyToOne(() => Category, { nullable: true })
-  @JoinColumn({ name: 'category_id' })
-  category: Category | null;
+  @ManyToOne(() => Spot, { nullable: false })
+  @JoinColumn({ name: 'spot_id' })
+  spot: Spot;
 }

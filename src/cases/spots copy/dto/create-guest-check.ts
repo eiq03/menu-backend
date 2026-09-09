@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsUUID } from 'class-validator';
 
-export class CreateSpotDto {
-  @IsString()
+export class CreateGuestCheckDto {
+  @IsUUID()
   @IsNotEmpty()
-  @MaxLength(60)
-  name: string;
+  spotId: string;
 }

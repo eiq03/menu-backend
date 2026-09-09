@@ -1,60 +1,41 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
   ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common';
-import { Spot } from './guest-check.entity';
-import { SpotService } from './spot.service';
-import { CreateSpotDto } from './dto/create-guest-check';
-import { UpdateSpotDto } from './dto/update-guest-check';
+import { GuestCheck } from './guest-check.entity';
+import { GuestCheckService } from './guest-check.service';
+import { CreateGuestCheckDto } from './dto/create-guest-check';
 
-@Controller('spots')
-export default class SpotController {
-  constructor(private readonly service: SpotService) {}
-
-  @Get()
-  findAll(): Promise<Spot[]> {
-    return this.service.findAll();
-  }
+@Controller('guest-checks')
+export default class GuestCheckController {
+  constructor(private readonly service: GuestCheckService) {}
 
   @Get(':id')
   findOne(
     @Param('id', ParseUUIDPipe)
     id: string,
-  ): Promise<Spot> {
+  ): Promise<GuestCheck> {
     return this.service.findOne(id);
   }
+
   @Post()
   create(
     @Body()
-    dto: CreateSpotDto,
-  ): Promise<Spot> {
+    dto: CreateGuestCheckDto,
+  ): Promise<GuestCheck> {
     return this.service.create(dto);
   }
 
-  @Patch(':id')
-  update(
+  @Patch(':id/close')
+  close(
     @Param('id', ParseUUIDPipe)
     id: string,
-    @Body()
-    dto: UpdateSpotDto,
-  ): Promise<Spot> {
-    return this.service.update(id, dto);
-  }
-
-  @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  remove(
-    @Param('id', ParseUUIDPipe)
-    id: string,
-  ): Promise<void> {
-    return this.service.remove(id);
+  ): Promise<GuestCheck> {
+    return this.service.close(id);
   }
 }
