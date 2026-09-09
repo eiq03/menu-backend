@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoryModule } from './cases/categories/category.module';
 import { ProductModule } from './cases/products/product.module';
 import { SpotModule } from './cases/spots/spot.module';
+import { GuestCheckModule } from './cases/spots copy/guest-check.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { SpotModule } from './cases/spots/spot.module';
     CategoryModule,
     ProductModule,
     SpotModule,
+    GuestCheckModule,
   ],
   controllers: [],
   providers: [],

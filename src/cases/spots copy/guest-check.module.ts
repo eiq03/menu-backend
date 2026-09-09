@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Spot } from './guest-check.entity';
-import SpotController from './guest-check.controller';
-import { SpotService } from './spot.service';
+import { GuestCheck } from './guest-check.entity';
+import GuestCheckController from './guest-check.controller';
+import { GuestCheckService } from './guest-check.service';
+import { Spot } from '../spots/spot.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Spot])],
-  controllers: [SpotController],
-  providers: [SpotService],
+  imports: [TypeOrmModule.forFeature([Spot, GuestCheck])],
+  controllers: [GuestCheckController],
+  providers: [GuestCheckService],
 })
-export class SpotModule {}
+export class GuestCheckModule {}
