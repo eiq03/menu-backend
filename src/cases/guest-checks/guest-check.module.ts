@@ -9,5 +9,6 @@ import { Spot } from '../spots/spot.entity';
   imports: [TypeOrmModule.forFeature([Spot, GuestCheck])],
   controllers: [GuestCheckController],
   providers: [GuestCheckService],
+  exports: [GuestCheckService],
 })
 export class GuestCheckModule {}
