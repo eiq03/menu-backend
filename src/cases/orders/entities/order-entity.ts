@@ -21,7 +21,7 @@ export class Order {
   id: string;
 
   @CreateDateColumn({ name: 'created_at' })
-  createAt: Date;
+  createdAt: Date;
 
   @ManyToOne(() => GuestCheck, { nullable: false })
   @JoinColumn({ name: 'guest_check_id' })
