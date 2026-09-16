@@ -32,6 +32,7 @@ export class OrderService {
     return this.orderItemRepository.create({
       product,
       quantity: itemDto.quantity,
+      price: product.price,
       subtotal,
     });
   }

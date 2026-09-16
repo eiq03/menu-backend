@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -16,6 +17,7 @@ export enum OrderStatus {
   DELIVERY = 'DELIVERY',
 }
 
+@Entity('order')
 export class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
