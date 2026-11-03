@@ -1,40 +1,39 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-} from 'typeorm';
-import { GuestCheck } from '../../guest-checks/guest-check.entity';
-import { OrderItem } from './order-item.entity';
+import { GuestCheck } from "src/cases/guest-checks/guest-check.entity";
+import { OrderItem } from "./order-item.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 export enum OrderStatus {
-  NEW = 'NEW',
-  PREPARING = 'PREPARING',
-  READY = 'READY',
-  DELIVERY = 'DELIVERY',
+    NEW = 'NEW',
+    PREPARING = 'PREPARING',
+    READY = 'READY',
+    DELIVERY = 'DELIVERY',
 }
 
-@Entity('order')
+@Entity()
 export class Order {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  @ManyToOne(() => GuestCheck, { nullable: false })
-  @JoinColumn({ name: 'guest_check_id' })
-  guestCheck: GuestCheck;
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: Date;
 
-  @Column({ type: 'numeric', precision: 10, scale: 2 })
-  total: number;
+    @ManyToOne(() => GuestCheck, { nullable: false })
+    @JoinColumn({ name: 'guest_check_id' })
+    guestCheck: GuestCheck;
 
-  @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.NEW })
-  status: OrderStatus;
+    @Column({ type: 'numeric', precision: 10, scale: 2 })
+    total: number;
 
-  @OneToMany(() => OrderItem, (item) => item.order, { cascade: true })
-  items: OrderItem[];
+    @Column({
+        type: 'enum',
+        enum: OrderStatus,
+        default: OrderStatus.NEW,
+    })
+    status: OrderStatus;
+
+    @OneToMany(() => OrderItem, (item) => item.order, {
+        cascade: true,
+    })
+    items: OrderItem[];
 }

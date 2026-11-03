@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
 
 export class CreateGuestCheckDto {
   @IsUUID()
-  @IsNotEmpty()
-  spotId: string;
+  SpotId: string;
 }

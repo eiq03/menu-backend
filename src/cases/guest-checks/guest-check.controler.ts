@@ -1,18 +1,21 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common';
-import { GuestCheck } from './guest-check.entity';
 import { GuestCheckService } from './guest-check.service';
+import { GuestCheck } from './guest-check.entity';
 import { CreateGuestCheckDto } from './dto/create-guest-check';
 
 @Controller('guest-checks')
-export default class GuestCheckController {
+export class GuestCheckController {
   constructor(private readonly service: GuestCheckService) {}
 
   @Get(':id')
@@ -38,4 +41,5 @@ export default class GuestCheckController {
   ): Promise<GuestCheck> {
     return this.service.close(id);
   }
+
 }

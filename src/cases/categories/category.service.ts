@@ -1,61 +1,66 @@
-import { Repository } from 'typeorm';
-import { Category } from './category.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
-import { CreateCategoryDto } from './dto/create-category';
-import { UpdateCategoryDto } from './dto/update-category';
-import { Injectable } from '@nestjs/common';
+import { Repository } from "typeorm";
+import { Category } from "./category.entity";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { CreateCategoryDto } from "./dto/create-category";
+import { UpdateCategoryDto } from "./dto/update-category";
 
 @Injectable()
 export class CategoryService {
-  constructor(
-    @InjectRepository(Category)
-    private readonly categoryRepository: Repository<Category>,
-  ) {}
 
-  findAll(): Promise<Category[]> {
-    return this.categoryRepository.find({
-      order: { name: 'ASC' },
-    });
-  }
+    constructor( 
+        @InjectRepository(Category)
+        private readonly categoryRepository: Repository<Category> 
+    ) {} 
 
-  async findOne(id: string): Promise<Category> {
-    const category = await this.categoryRepository.findOneBy({ id });
-
-    if (!category) {
-      throw new NotFoundException('Categoria nao encontrada');
+    findAll(): Promise<Category[]> {
+        return this.categoryRepository.find({
+            order: { name: 'ASC' }
+        });
     }
 
-    return category;
-  }
+    async findOne(id: string): Promise<Category> {
+        const category = await this.categoryRepository.findOneBy({ id });
+ 
+        if (!category) {
+            throw new NotFoundException(`Category with id ${id} not found`);
+        }
 
-  create(dto: CreateCategoryDto): Promise<Category> {
-    const category = this.categoryRepository.create({
-      ...dto,
-      name: dto.name,
-      active: true,
-    });
-
-    return this.categoryRepository.save(category);
-  }
-
-  async update(id: string, dto: UpdateCategoryDto): Promise<Category> {
-    const category = await this.findOne(id);
-
-    if (dto.name !== undefined) {
-      category.name = dto.name;
+        return category;
     }
 
-    if (dto.active !== undefined) {
-      category.active = dto.active;
+    create(dto: CreateCategoryDto): Promise<Category> {
+
+        const category = this.categoryRepository.create({
+            ...dto,
+            name: dto.name,
+            active: true
+        });
+
+        return this.categoryRepository.save(category);
+
     }
 
-    return this.categoryRepository.save(category);
-  }
+    async update(id: string, dto: UpdateCategoryDto ): Promise<Category> {
+        const category = await this.findOne(id);
 
-  async remove(id: string): Promise<void> {
-    const category = await this.findOne(id);
+        if (dto.name !== undefined) {
+           category.name = dto.name;
+        };
 
-    await this.categoryRepository.remove(category);
-  }
+        if (dto.active !== undefined) {
+           category.active = dto.active;
+        };
+
+
+        return this.categoryRepository.save(category);
+    }
+
+    
+
+    async remove(id: string): Promise<void> {
+        const category = await this.findOne(id);
+        await this.categoryRepository.remove(category);
+    }
+
 }

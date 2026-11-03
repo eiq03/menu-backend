@@ -1,17 +1,9 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Spot } from '../spots/spot.entity';
 
 export enum GuestCheckStatus {
-  OPENED = 'open',
-  CLOSED = 'closed',
-  CANCELED = 'canceled',
+  OPENED = 'OPENED',
+  CLOSED = 'CLOSED',
 }
 
 @Entity('guest-check')
@@ -27,7 +19,7 @@ export class GuestCheck {
     enum: GuestCheckStatus,
     default: GuestCheckStatus.OPENED,
   })
-  Status: GuestCheckStatus;
+  status: GuestCheckStatus;
 
   @ManyToOne(() => Spot, { nullable: false })
   @JoinColumn({ name: 'spot_id' })

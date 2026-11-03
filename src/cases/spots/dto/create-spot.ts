@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateSpotDto {
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   @MaxLength(60)
-  name: string;
+  name?: string;
 }

@@ -1,35 +1,27 @@
-import { Product } from 'src/cases/products/product.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Order } from './order-entity';
+import { Product } from "src/cases/products/product.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Order } from "./order-entity";
 
 @Entity('order_item')
 export class OrderItem {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
 
-  @ManyToOne(() => Order, { nullable: false, onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'Order_id' })
-  order: Order;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  @ManyToOne(() => Product, { nullable: false })
-  @JoinColumn({ name: 'product_id' })
-  product: Product;
+    @ManyToOne(() => Order, { nullable: false })
+    @JoinColumn({ name: 'order_id' })
+    order: Order;
 
-  @Column({ type: 'integer' })
-  quantity: number;
+    @ManyToOne(() => Product, { nullable: false })
+    @JoinColumn({ name: 'product_id' })
+    product: Product;
 
-  @Column({ type: 'numeric', precision: 10, scale: 2 })
-  price: number;
+    @Column({ type: 'integer' })
+    quantity: number;
 
-  @Column({ type: 'numeric', precision: 10, scale: 2 })
-  total: number;
+    @Column({type: 'numeric', precision: 10, scale: 2})
+    price: number;
 
-  @Column({ type: 'numeric', precision: 10, scale: 2 })
-  subtotal: number;
+    @Column({type: 'numeric', precision: 10, scale: 2})
+    subtotal: number;
 }
