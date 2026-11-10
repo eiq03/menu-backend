@@ -2,5 +2,5 @@ import { IsNotEmpty, IsOptional, IsString, IsUUID, MaxLength } from 'class-valid
 
 export class CreateGuestCheckDto {
   @IsUUID()
-  SpotId: string;
+  spotId: string;
 }

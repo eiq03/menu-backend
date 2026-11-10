@@ -21,7 +21,7 @@ export class GuestCheckService {
         
         //regra 1: não se abre comanda em mesa inexistente ou inativa
         const spot = await this.spotRepository.findOneBy({
-            id: dto.SpotId,
+            id: dto.spotId,
             active: true
         })
 
@@ -32,7 +32,7 @@ export class GuestCheckService {
         //regra 2: não se abre comanda em mesa que já tenha comanda aberta
         const opened = await this.guestCheckRepository.exists({
             where: {
-                spot: { id: dto.SpotId},
+                spot: { id: dto.spotId},
                 status: GuestCheckStatus.OPENED
             }
         })
@@ -93,6 +93,6 @@ export class GuestCheckService {
             return opened;
         }
 
-        return this.create({ SpotId: spotId });
+        return this.create({ spotId });
     }
 }
