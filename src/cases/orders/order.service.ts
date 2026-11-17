@@ -62,12 +62,16 @@ export class OrderService {
 
     findAll(): Promise<Order[]> {
         return this.orderRepository.find({
-            order: { createdAt: 'ASC' }
+            order: { createdAt: 'ASC' },
+            relations: { guestCheck: { spot: true }, items: { product: true } }
         });
     }
 
     async findOne(id: string): Promise<Order> {
-        const order = await this.orderRepository.findOneBy({ id });
+        const order = await this.orderRepository.findOne({
+            where: { id },
+            relations: { guestCheck: { spot: true }, items: { product: true } }
+        });
 
         if (!order) {
             throw new NotFoundException(`Order with id ${id} not found`);
@@ -79,16 +83,9 @@ export class OrderService {
     async updateStatus(id: string, dto: UpdateOrderStatusDto ): Promise<Order> {
         const order = await this.findOne(id);
 
-        // Determina a sequência de status permitida
-        const nextStatus : Record<OrderStatus, OrderStatus | undefined> = {
-            [OrderStatus.NEW]: OrderStatus.PREPARING,
-            [OrderStatus.PREPARING]: OrderStatus.READY,
-            [OrderStatus.READY]: OrderStatus.DELIVERY,
-            [OrderStatus.DELIVERY]: undefined
-        }
-
+        // Transições livres: qualquer status do enum pode ir para qualquer outro
         // verifico se o client está enviando um status válido
-        if (nextStatus[order.status] !== dto.status){
+        if (!Object.values(OrderStatus).includes(dto.status)){
             throw new BadRequestException('Status invalido')
         }
 
