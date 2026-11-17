@@ -46,6 +46,8 @@ export class ProductService {
             description: dto.description,
             price: dto.price,
             picture: dto.picture,
+            vegetarian: dto.vegetarian,
+            isNew: dto.isNew,
             active: true,
             category
         });
@@ -74,6 +76,14 @@ export class ProductService {
 
         if (dto.active !== undefined) {
            product.active = dto.active;
+        };
+
+        if (dto.vegetarian !== undefined) {
+           product.vegetarian = dto.vegetarian;
+        };
+
+        if (dto.isNew !== undefined) {
+           product.isNew = dto.isNew;
         };
 
         if (dto.categoryId !== undefined) {
