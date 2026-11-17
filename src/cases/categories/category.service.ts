@@ -1,7 +1,7 @@
-import { Repository } from "typeorm";
+import { QueryFailedError, Repository } from "typeorm";
 import { Category } from "./category.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateCategoryDto } from "./dto/create-category";
 import { UpdateCategoryDto } from "./dto/update-category";
 
@@ -68,7 +68,16 @@ export class CategoryService {
 
     async remove(id: string): Promise<void> {
         const category = await this.findOne(id);
-        await this.categoryRepository.remove(category);
+
+        try {
+            await this.categoryRepository.remove(category);
+        } catch (error) {
+            // 23503 = chave estrangeira: categoria ainda tem produtos vinculados
+            if (error instanceof QueryFailedError && (error.driverError as any).code === '23503') {
+                throw new ConflictException('Category has linked products and cannot be removed');
+            }
+            throw error;
+        }
     }
 
 }

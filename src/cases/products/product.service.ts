@@ -1,7 +1,7 @@
-import { Repository } from "typeorm";
+import { QueryFailedError, Repository } from "typeorm";
 import { Product } from "./product.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { Category } from "../categories/category.entity";
 import { CreateProductDto } from "./dto/create-product";
 import { UpdateProductDto } from "./dto/update-product";
@@ -97,7 +97,16 @@ export class ProductService {
 
     async remove(id: string): Promise<void> {
         const product = await this.findOne(id);
-        await this.productRepository.remove(product);
+
+        try {
+            await this.productRepository.remove(product);
+        } catch (error) {
+            // 23503 = chave estrangeira: produto já está em algum pedido
+            if (error instanceof QueryFailedError && (error.driverError as any).code === '23503') {
+                throw new ConflictException('Product is linked to orders and cannot be removed');
+            }
+            throw error;
+        }
     }
 
     private async getActiveCategory(id: string): Promise<Category> {

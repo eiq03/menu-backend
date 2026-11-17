@@ -1,7 +1,7 @@
-import { Repository } from "typeorm";
+import { QueryFailedError, Repository } from "typeorm";
 import { Spot } from "./spot.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateSpotDto } from "./dto/create-spot";
 import { UpdateSpotDto } from "./dto/update-spot";
 
@@ -60,7 +60,16 @@ export class SpotService {
 
     async remove(id: string): Promise<void> {
         const spot = await this.findOne(id);
-        await this.spotRepository.remove(spot);
+
+        try {
+            await this.spotRepository.remove(spot);
+        } catch (error) {
+            // 23503 = chave estrangeira: mesa já tem comandas vinculadas
+            if (error instanceof QueryFailedError && (error.driverError as any).code === '23503') {
+                throw new ConflictException('Spot has linked guest checks and cannot be removed');
+            }
+            throw error;
+        }
     }
 
 }
