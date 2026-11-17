@@ -50,14 +50,27 @@ export class GuestCheckService {
         
     }
 
+    async findAll(status?: GuestCheckStatus): Promise<GuestCheck[]> {
+        const guestChecks = await this.guestCheckRepository.find({
+            where: status ? { status } : {},
+            relations: { spot: true, orders: true },
+            order: { createdAt: 'ASC' }
+        });
+
+        return guestChecks.map((guestCheck) => this.calculateTotal(guestCheck));
+    }
+
     async findOne(id: string): Promise<GuestCheck> {
-        const guestCheck = await this.guestCheckRepository.findOneBy({ id });
-     
+        const guestCheck = await this.guestCheckRepository.findOne({
+            where: { id },
+            relations: { spot: true, orders: { items: { product: true } } }
+        });
+
         if (!guestCheck) {
             throw new NotFoundException(`Guest check with id ${id} not found`);
         }
-    
-        return guestCheck;
+
+        return this.calculateTotal(guestCheck);
     }
 
     async close(id: string): Promise<GuestCheck> {
@@ -94,5 +107,11 @@ export class GuestCheckService {
         }
 
         return this.create({ spotId });
+    }
+
+    // Total acumulado da comanda = soma do total de cada pedido
+    private calculateTotal(guestCheck: GuestCheck): GuestCheck {
+        guestCheck.total = guestCheck.orders.reduce((sum, order) => sum + Number(order.total), 0);
+        return guestCheck;
     }
 }
