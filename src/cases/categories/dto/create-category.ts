@@ -1,4 +1,4 @@
-import { IsBIC, IsBoolean, IsNotEmpty, IsOptional, IsString, IsUrl, MaxLength } from "class-validator";
+import { IsBIC, IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, IsUrl, MaxLength, Min } from "class-validator";
 
 export class CreateCategoryDto {
     @IsOptional()
@@ -10,4 +10,9 @@ export class CreateCategoryDto {
     @IsOptional()
     @IsUrl()
     icon?: string;
+
+    @IsOptional()
+    @IsInt()
+    @Min(0)
+    displayOrder?: number;
 }

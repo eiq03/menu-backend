@@ -15,7 +15,7 @@ export class CategoryService {
 
     findAll(): Promise<Category[]> {
         return this.categoryRepository.find({
-            order: { name: 'ASC' }
+            order: { displayOrder: 'ASC', name: 'ASC' }
         });
     }
 
@@ -50,6 +50,14 @@ export class CategoryService {
 
         if (dto.active !== undefined) {
            category.active = dto.active;
+        };
+
+        if (dto.icon !== undefined) {
+           category.icon = dto.icon;
+        };
+
+        if (dto.displayOrder !== undefined) {
+           category.displayOrder = dto.displayOrder;
         };
 
 

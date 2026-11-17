@@ -13,4 +13,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
         @Column({ type: 'text', nullable: true })
         icon: string;
+
+        @Column({ name: 'display_order', type: 'int', default: 0 })
+        displayOrder: number;
     }
