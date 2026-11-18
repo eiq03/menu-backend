@@ -17,9 +17,11 @@ export class ProductService {
         private readonly productRepository: Repository<Product> 
     ) {} 
 
-    findAll(categoryId?: string): Promise<Product[]> {
+    // includeInactive: usado pelo CMS para listar também os produtos inativos
+    findAll(categoryId?: string, includeInactive?: boolean): Promise<Product[]> {
         return this.productRepository.find({
-            where: {active: true,
+            where: {
+                ...(!includeInactive && { active: true }),
                 ...(categoryId && { category: { id: categoryId } })
             },
             order: { name: 'ASC' },
