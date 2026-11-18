@@ -17,8 +17,11 @@ export class ProductService {
         private readonly productRepository: Repository<Product> 
     ) {} 
 
-    findAll(): Promise<Product[]> {
+    findAll(categoryId?: string): Promise<Product[]> {
         return this.productRepository.find({
+            where: {active: true,
+                ...(categoryId && { category: { id: categoryId } })
+            },
             order: { name: 'ASC' },
             relations: { category: true }
         });

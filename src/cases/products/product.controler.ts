@@ -14,7 +14,7 @@ export class ProductController {
     @Query('categoryId', new ParseUUIDPipe({ optional: true }))
     categoryId?: string
   ): Promise<Product[]> {
-    return this.service.findAll();
+    return this.service.findAll(categoryId);
   }
 
     @Get(':id')
